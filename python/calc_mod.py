@@ -72,5 +72,3 @@ def calc(imagen,dx,dt):
 	X=Xt.transpose()
 	a = np.dot(np.dot(inv(np.dot(Xt,X)),Xt),y)
 	print a[2]*2
-
-	return 0
