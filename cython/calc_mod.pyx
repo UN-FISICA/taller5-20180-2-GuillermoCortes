@@ -24,9 +24,8 @@ def contador(x):
 	while(x[i]==0):
 		i=i+1
 		nc=nc+1
-	x=x[(n+nc):]
-	u = int(n/2)	#Fila central de las n-esimas filas de x
-	return x, n, nc, u #x: nueva lista. nc= No. de ceros u = 
+	x=x[(n+nc):]	#Fila central de las n-esimas filas de x
+	return x, n, nc#x: nueva lista. nc= No. de ceros u = 
 		
 def contadorb(x):
 	i=0
@@ -45,14 +44,20 @@ def contadorb(x):
 		i=i+1		
 	return b
 			
-def centros(x,b)
+def centros(x,b):
 	i=0
 	j=0
 	a = []
-	xtemp = []
+	nc=0
+	n=0
+	xtemp = x
+	suma = 0
 	while(i<b):
+		xtemp, nt, nct= contador(xtemp)
+		suma = suma + nt + nct
+		a.append(suma/2)
 		
-		
+		i=i+1
 	return a
 	
 def sincer(x):
@@ -117,8 +122,10 @@ def calc(imagen,dx,dt):
 	plt.show()
 
 
-
 	
 
-calc("b5.jpeg",0.5,0.1)
 
+#Hasta aqui tocaria es encontrar los "centros" de cada "bloque" de x.
+	
+
+calc("Bolas1.tif",0.5,0.1)
