@@ -31,30 +31,40 @@ def contadorb(x):
 	return b
 			
 def centros(x,b):
-	t=0
-	a = []*b
-	u=0
-	suma = 0
-	xtemp = x
+	i=0
+	ci = []
+	ci2 = []
+	while(x[i]!=0):
+		i=i+1
+	e1=i		
+	while(x[i]==0):
+		i=i+1
+	ci = e1 + i
+	c = e1/2
+	ci2 = 0
+	t=1
+	x = x[i:]
+	centro = []*b
 	while(t<b):
-		r=0
-		nct=0
-		nt=0
-		i=0
-		while(xtemp[i]!=0):
-			nt=nt+1
-			i=i+1
-		nt = nt + i
-		while(xtemp[i]==0):
-			nt=nt+1
-			i=i+1
-		xtemp = x[i:]
-		u = u + suma
-		a.append(u)
-		suma= suma + nt
+		a=0
+		j=0
+		s=[]
+		while(x[a]!=0):
+			a=a+1
+			j=j+1
+		cit = a
+		s = x[a:]
+		a=0
+		while(s[a]==0):
+			a=a+1
+			j=j+1
+		centro.append(ci + (cit)/2)
+		ci = ci + j
+		x = s[a:]
 		t=t+1
-	return a
+	return centro
 	
+
 def sincer(x):
 	i=0
 	n=0
@@ -100,27 +110,28 @@ def cuadrados(x,t):
 		Xt.append(fu(x))
 	Xt = np.array(Xt)
 	X = trans(Xt)
-	print Xt
-	print X #Ya esta la inversa. Ahora, hay que definir el producto "np.dot()"
+	a = np.dot(np.dot(inv(np.dot(Xt,X)),Xt),t)
+	print a[2]*2
 
 def determinante(x):
-	det = (x[0][0]*x[1][1]*x[2][2]) + (x[1][0]*x[2][1]*x[0][2]) + (x[2][0]*x[0][1]*x[1][2]) - (x[0][2]*x[1][1]*x[2][0]) - (x[1][2]*x[2][1]*x[0][0]) - (x[2][2]*x[0][1]*x[1][0])
+	det = (x[0][0]*x[1][1]*x[2][2]) + (x[1][
+	0]*x[2][1]*x[0][2]) + (x[2][0]*x[0][1]*x[1][2]) - (x[0][2]*x[1][1]*x[2][0]) - (x[1][2]*x[2][1]*x[0][0]) - (x[2][2]*x[0][1]*x[1][0])
 	return det
 
 def inv(x):
 	i=[[None]*3,[None]*3,[None]*3]
 	det = determinante(x)
-	i[0,0]=(b[1,1]*b[2,2]-b[1,2]*b[2,1])/det
-	i[0,1]=(b[0,2]*b[2,1]-b[0,1]*b[2,2])/det
-	i[0,2]=(b[0,1]*b[1,2]-b[0,2]*b[1,1])/det
+	i[0][0]=(x[1][1]*x[2][2]-x[1][2]*x[2][1])/det
+	i[0][1]=(x[0][2]*x[2][1]-x[0][1]*x[2][2])/det
+	i[0][2]=(x[0][1]*x[1][2]-x[0][2]*x[1][1])/det
 	
-	i[1,0]=(b[1,2]*b[2,0]-b[1,0]*b[2,2])/det
-	i[1,1]=(b[0,0]*b[2,2]-b[0,2]*b[2,0])/det
-	i[1,2]=(b[0,2]*b[1,0]-b[0,0]*b[1,2])/det
+	i[1][0]=(x[1][2]*x[2][0]-x[1][0]*x[2][2])/det
+	i[1][1]=(x[0][0]*x[2][2]-x[0][2]*x[2][0])/det
+	i[1][2]=(x[0][2]*x[1][0]-x[0][0]*x[1][2])/det
 	
-	i[2,0]=(b[1,0]*b[2,1]-b[1,1]*b[2,0])/det
-	i[2,1]=(b[0,1]*b[2,0]-b[0,0]*b[2,1])/det
-	i[2,2]=(b[0,0]*b[1,1]-b[0,1]*b[1,0])/det
+	i[2][0]=(x[1][0]*x[2][1]-x[1][1]*x[2][0])/det
+	i[2][1]=(x[0][1]*x[2][0]-x[0][0]*x[2][1])/det
+	i[2][2]=(x[0][0]*x[1][1]-x[0][1]*x[1][0])/det
 	return i
 
 def trans(x):
@@ -167,22 +178,14 @@ def calc(imagen,dx,dt):
 	x=np.array(x) #Todo pasa a ser un arreglo.
 	x = inicio(x) #Quitamos el primer conjunto y los primeros ceros.
 	b = contadorb(x)
-	Centro = []
-	Centro = centros(x,b)
-	Tiempo = []
 	Altura = []
-	for i in Centro:
-		Altura.append(i*dx)
-	for i in range(len(Centro)):
-		Tiempo.append((i+1)/dt)
-	A = np.array(Altura)
-	B = np.array(Tiempo)
+	Altura = centros(x,b)
+	print Altura
 
-	a = cuadrados(B,A)
-
-	plt.imshow(img)
-	plt.show()
+	
 
 
-calc("Bolas1.tif",0.5,1)
+#Hasta aqui tocaria es encontrar los "centros" de cada "bloque" de x.
+	
 
+calc("b0.jpeg",0.5,0.5)
