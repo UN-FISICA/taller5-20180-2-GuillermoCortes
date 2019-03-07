@@ -101,12 +101,27 @@ def cuadrados(x,t):
 	Xt = np.array(Xt)
 	X = trans(Xt)
 	print Xt
-	print X #Se continua desde aqui. 
-	#Necesitamos la inversa y, para ello, se usa determinante y la def de la inversa. En otras palabras, toca hacer eso ahora
+	print X #Ya esta la inversa. Ahora, hay que definir el producto "np.dot()"
 
 def determinante(x):
 	det = (x[0][0]*x[1][1]*x[2][2]) + (x[1][0]*x[2][1]*x[0][2]) + (x[2][0]*x[0][1]*x[1][2]) - (x[0][2]*x[1][1]*x[2][0]) - (x[1][2]*x[2][1]*x[0][0]) - (x[2][2]*x[0][1]*x[1][0])
 	return det
+
+def inv(x):
+	i=[[None]*3,[None]*3,[None]*3]
+	det = determinante(x)
+	i[0,0]=(b[1,1]*b[2,2]-b[1,2]*b[2,1])/det
+	i[0,1]=(b[0,2]*b[2,1]-b[0,1]*b[2,2])/det
+	i[0,2]=(b[0,1]*b[1,2]-b[0,2]*b[1,1])/det
+	
+	i[1,0]=(b[1,2]*b[2,0]-b[1,0]*b[2,2])/det
+	i[1,1]=(b[0,0]*b[2,2]-b[0,2]*b[2,0])/det
+	i[1,2]=(b[0,2]*b[1,0]-b[0,0]*b[1,2])/det
+	
+	i[2,0]=(b[1,0]*b[2,1]-b[1,1]*b[2,0])/det
+	i[2,1]=(b[0,1]*b[2,0]-b[0,0]*b[2,1])/det
+	i[2,2]=(b[0,0]*b[1,1]-b[0,1]*b[1,0])/det
+	return i
 
 def trans(x):
 	c=len(x[0])
@@ -164,13 +179,10 @@ def calc(imagen,dx,dt):
 	B = np.array(Tiempo)
 
 	a = cuadrados(B,A)
-	
-	
-	
-	
-	
+
 	plt.imshow(img)
 	plt.show()
+
 
 calc("Bolas1.tif",0.5,1)
 
