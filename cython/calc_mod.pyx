@@ -12,20 +12,6 @@ def inicio(x):
 	x = x[n:]
 	x = sincer(x)
 	return x 
-	
-def contador(x):
-	n=0
-	nc = 0
-	i=0
-	u=0
-	while(x[i]!=0):
-		n=n+1 #Numero de elementos de la primera esfera encontrada en x
-		i=i+1 #Numero del elemento de x hasta que llego.
-	while(x[i]==0):
-		i=i+1
-		nc=nc+1
-	x=x[(n+nc):]	#Fila central de las n-esimas filas de x
-	return x, n, nc#x: nueva lista. nc= No. de ceros u = 
 		
 def contadorb(x):
 	i=0
@@ -45,19 +31,28 @@ def contadorb(x):
 	return b
 			
 def centros(x,b):
-	i=0
-	j=0
-	a = []
-	nc=0
-	n=0
-	xtemp = x
+	t=0
+	a = []*b
+	u=0
 	suma = 0
-	while(i<b):
-		xtemp, nt, nct= contador(xtemp)
-		suma = suma + nt + nct
-		a.append(suma/2)
-		
-		i=i+1
+	xtemp = x
+	while(t<b):
+		r=0
+		nct=0
+		nt=0
+		i=0
+		while(xtemp[i]!=0):
+			nt=nt+1
+			i=i+1
+		nt = nt + i
+		while(xtemp[i]==0):
+			nt=nt+1
+			i=i+1
+		xtemp = x[i:]
+		u = u + suma
+		a.append(u)
+		suma= suma + nt
+		t=t+1
 	return a
 	
 def sincer(x):
@@ -86,13 +81,54 @@ def cont1(img):
 		g=0
 	return x
 
-def final(x):
-	xtemp = x[::-1]
-	xtemp = sincer(xtemp)
-	xtemp = xtemp[::-1]
-	return xtemp
+def cuadrados(x,t):
+	l = len(x)
+	temp = []
+	i=0
+	s= [1]*l
+	while(i<l):
+		temp.append(x[i]*x[i])
+		i=i+1
+	f = []
+	f.append(lambda x:s)
+	f.append(lambda x:x)
+	f.append(lambda x:temp)
 	
+	Xt = []
+	
+	for fu in f:
+		Xt.append(fu(x))
+	Xt = np.array(Xt)
+	X = trans(Xt)
+	print Xt
+	print X #Se continua desde aqui. 
+	#Necesitamos la inversa y, para ello, se usa determinante y la def de la inversa. En otras palabras, toca hacer eso ahora
+
+def determinante(x):
+	det = (x[0][0]*x[1][1]*x[2][2]) + (x[1][0]*x[2][1]*x[0][2]) + (x[2][0]*x[0][1]*x[1][2]) - (x[0][2]*x[1][1]*x[2][0]) - (x[1][2]*x[2][1]*x[0][0]) - (x[2][2]*x[0][1]*x[1][0])
+	return det
+
+def trans(x):
+	c=len(x[0])
+	f=len(x)
+	fi=0
+	cl = 0
+	i = 0
+	xT = [None]*c
+	for i in range(c):
+		xT[i] = [None]*f
+	while fi < f:
+		while cl < c:
+			xT[cl][fi] = x[fi][cl]
+			cl = cl + 1
+		fi = fi + 1 
+		cl = 0
+	xT = np.array(xT)
+	return xT
+
 def calc(imagen,dx,dt):
+	dx=dx
+	dt = 1/dt
 	imc=plt.imread(imagen)
 	img=((imc[:,:,0]*0.2989) + (imc[:,:,1]*0.5870) + (imc[:,:,2]*0.1140))/3
 	a = (sum(sum(img)))/(10**6)
@@ -116,16 +152,25 @@ def calc(imagen,dx,dt):
 	x=np.array(x) #Todo pasa a ser un arreglo.
 	x = inicio(x) #Quitamos el primer conjunto y los primeros ceros.
 	b = contadorb(x)
-	print x
-	print b
+	Centro = []
+	Centro = centros(x,b)
+	Tiempo = []
+	Altura = []
+	for i in Centro:
+		Altura.append(i*dx)
+	for i in range(len(Centro)):
+		Tiempo.append((i+1)/dt)
+	A = np.array(Altura)
+	B = np.array(Tiempo)
+
+	a = cuadrados(B,A)
+	
+	
+	
+	
+	
 	plt.imshow(img)
 	plt.show()
 
+calc("Bolas1.tif",0.5,1)
 
-	
-
-
-#Hasta aqui tocaria es encontrar los "centros" de cada "bloque" de x.
-	
-
-calc("Bolas1.tif",0.5,0.1)
